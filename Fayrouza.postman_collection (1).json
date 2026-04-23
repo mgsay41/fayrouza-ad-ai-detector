@@ -1,0 +1,2580 @@
+{
+  "info": {
+    "_postman_id": "386bbb67-aecd-41a3-b468-101c76545794",
+    "name": "Fayrouza",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28705207",
+    "_collection_link": "https://go.postman.co/collection/28705207-386bbb67-aecd-41a3-b468-101c76545794?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"test300030\",\r\n    \"email\": \"test300030@test.com\",\r\n    \"password\": \"123456789\",\r\n    \"password_confirmation\": \"123456789\",\r\n    \"phone\": \"015088488877\",\r\n    \"dial_code\": \"+20\",\r\n    \"country_id\":1,\r\n    \"city_id\": 1 \r\n    // \"referral_code\": \"FA9960\"\r\n    // referral_code ====> فى حالة دعوة صديق (فى حالة انه نزل الابلكيشن من خلال رابط صديقة هتضيف انبت فى صفحة الريجستر بال key ده )\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/register",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if(res.data.token){",
+                  "pm.environment.set(\"token\",res.data.token);",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"email\": \"ahmed.ramadan.abdelaaty5@gmail.com\",\r\n    // \"password\": \"123456789\",\r\n    // \"platform\":\"android\"\r\n\r\n    \"email\": \"engabdelaaty3210@gmail.com\",\r\n    \"password\": \"Aa123456789\",\r\n    \"platform\":\"android\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/login",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify otp",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"otp\": \"1111\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/verify-otp",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "verify-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"test@test.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/send-otp",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "send-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"hussincode78@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"password_confirmation\": \"123456789\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/reset-password",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer 2|ZTRriAgTIEVZfO9IUbTqOShUTVqZMCmZY6DCcg7F9c8266a7",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/logout",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Guest Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/guest-login",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "guest-login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Social Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"provider\": \"google\",\r\n  \"access_token\": \"fgs02GEWTjqCgJjqbKvQXG:APA91bFCnBlg3JLVTj7n5GTvP4UIqn0T4emvCrgTz-mKUNxo6Y8m2ykZfJNdFjdoDP-_XDs5465eaNnLF-lWd-SnBgIGxTFnp7dSrhc10FMwbSRpaMozt2c\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/login/social",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "login",
+                "social"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refreshFcmToken",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"platform\":\"ios\",\n\"fcm_token\":\"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/update/device/token",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "update",
+                "device",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ADS",
+      "item": [
+        {
+          "name": "User Ads",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|TY5GWOmEWZahVvXovqQ7kZnvLF4EfabAGgCvBKSQ5314e8b8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/user/ads",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "user",
+                "ads"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "1",
+                  "description": "[1=>active,2=>INACTIVE,3=>pending,4=>rejected]",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "dfsdkl",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Ad Destails",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 11|5GqdSpmtUETAma6Py66nZeEQibFz3j6pFWiPfNx54884b01f",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/user/ads/2399",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "user",
+                "ads",
+                "2399"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 11|5GqdSpmtUETAma6Py66nZeEQibFz3j6pFWiPfNx54884b01f",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/ads/show/2398",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "ads",
+                "show",
+                "2398"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Ad",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|TY5GWOmEWZahVvXovqQ7kZnvLF4EfabAGgCvBKSQ5314e8b8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name[ar]",
+                  "value": "اعلان جديد",
+                  "type": "text"
+                },
+                {
+                  "key": "name[en]",
+                  "value": "new ad",
+                  "type": "text"
+                },
+                {
+                  "key": "category_id",
+                  "value": "1973",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "postman-cloud:///1f0a4485-36b8-4000-8137-d14187ace190"
+                },
+                {
+                  "key": "description[ar]",
+                  "value": "اعلان جدييييييييييييد",
+                  "type": "text"
+                },
+                {
+                  "key": "description[en]",
+                  "value": "new adddddddddddd",
+                  "type": "text"
+                },
+                {
+                  "key": "city_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "ad_type_id",
+                  "value": "1",
+                  "description": "ده التصنيف اللي هو مثلا منتج او وظيفة او عقار وهكذا",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "1",
+                  "description": "NORMAL = 1, PREMIUM = 2",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "150205",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "is_used",
+                  "value": "0",
+                  "description": "0 or 1",
+                  "type": "text",
+                  "uuid": "7190f624-ea12-4df9-ac0d-e5d93feb362d"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{mobile_url}}/create_ad",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "create_ad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/ads?category_id=1973",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "ads"
+              ],
+              "query": [
+                {
+                  "key": "category_id",
+                  "value": "1973"
+                },
+                {
+                  "key": "city_id",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "min_price",
+                  "value": "0",
+                  "disabled": true
+                },
+                {
+                  "key": "max_price",
+                  "value": "10000",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "highprice",
+                  "description": "or lowprice or updated or default",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "fildes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/ad-category/1/fields",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "ad-category",
+                "1",
+                "fields"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/ads/delete/2978",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "ads",
+                "delete",
+                "2978"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/ads/update/1944?status=1",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "ads",
+                "update",
+                "1944"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "mainCategories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/categories",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "subCategories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/categories/1?name=",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "categories",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Attributes",
+      "item": [
+        {
+          "name": "Countries",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/countries",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "countries"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "States",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/country_states?country_id=1",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "country_states"
+              ],
+              "query": [
+                {
+                  "key": "country_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "country cities",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/country_cities?country_id=1",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "country_cities"
+              ],
+              "query": [
+                {
+                  "key": "country_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "state cities",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/state_cities",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "state_cities"
+              ],
+              "query": [
+                {
+                  "key": "state_id",
+                  "value": "null",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "country states",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/country_states?country_id=2",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "country_states"
+              ],
+              "query": [
+                {
+                  "key": "country_id",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Fav",
+      "item": [
+        {
+          "name": "Get User Favs",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/ads/favourites?id=1",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "ads",
+                "favourites"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Ad to Favourites",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ad_id\": \"2\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/ads/favourites",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "ads",
+                "favourites"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "get coins",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/user/coins",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "user",
+                "coins"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "ahmed ramadan",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ahmed.ramadan.abdelaaty5@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "051518410",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/F:/files/old_files/img/download (1).jpeg"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{mobile_url}}/user/edit",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "user",
+                "edit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/user/delete-account",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "user",
+                "delete-account"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "item": [
+        {
+          "name": "privacy-policy",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "amr gamal Abd",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "phone",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/Users/lyionstore/Downloads/Poland Flag.png",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{mobile_url}}/privacy-policy",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "privacy-policy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "terms-of-use",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "amr gamal Abd",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "phone",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/Users/lyionstore/Downloads/Poland Flag.png",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{mobile_url}}/terms-of-use",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "terms-of-use"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "cv",
+      "item": [
+        {
+          "name": "Get Templates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/cv/templates",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "cv",
+                "templates"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create CV",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"template_id\": 4,\r\n  \"language\": \"ar\",\r\n  \"data\": {\r\n    \"personal_info\": {\r\n      \"name\": \" محمد عبد الرحمن\",\r\n      \"email\": \"ahmed.backend.dev@example.com\",\r\n      \"phone\": \"01024567891\",\r\n      \"address\": \"القاهرة، مصر\",\r\n      \"job_title\": \"مطور نظم خلفية أول\",\r\n      \"summary\": \"مطور نظم خلفية أول يمتلك خبرة واسعة في بناء أنظمة خلفية قوية وقابلة للتوسع باستخدام Laravel وPHP وMySQL. متخصص في تصميم واجهات برمجة التطبيقات (RESTful APIs)، تحسين أداء قواعد البيانات، وتنفيذ أنظمة المصادقة والصلاحيات بأعلى معايير الأمان. لديه خبرة قوية في تصميم بنية الأنظمة وتحسين جودة الكود والعمل ضمن فرق تطوير كبيرة.\"\r\n    },\r\n    \"education\": [\r\n      {\r\n        \"degree\": \"بكالوريوس علوم الحاسب\",\r\n        \"institution\": \"جامعة القاهرة\",\r\n        \"start_date\": \"2014-09-01\",\r\n        \"end_date\": \"2018-06-01\"\r\n      }\r\n    ],\r\n    \"experience\": [\r\n      {\r\n        \"position\": \"مطور نظم خلفية أول\",\r\n        \"company\": \"Digital Horizon\",\r\n        \"start_date\": \"2021-01-01\",\r\n        \"current\": true,\r\n        \"description\": \"قيادة تطوير الأنظمة الخلفية لعدة مشاريع تشمل: • أنظمة ERP متكاملة: تطوير وحدات الحسابات، الموارد البشرية، والمخزون. • منصات SaaS: تصميم API مرنة، إدارة الاشتراكات، وتحسين الأداء العام. • منصات تعليمية: بناء أنظمة LMS، إدارة الاختبارات، وتتبع تقدم الطلاب. • متاجر إلكترونية: تطوير أنظمة الطلبات، الدفع الإلكتروني، والتكامل مع بوابات الدفع.\"\r\n      },\r\n      {\r\n        \"position\": \"مطور نظم خلفية\",\r\n        \"company\": \"CodeWave Solutions\",\r\n        \"start_date\": \"2018-07-01\",\r\n        \"end_date\": \"2020-12-01\"\r\n      }\r\n    ],\r\n    \"skills\": [\r\n      { \"name\": \"PHP\", \"level\": \"متقدم\" },\r\n      { \"name\": \"Laravel\", \"level\": \"خبير\" },\r\n      { \"name\": \"MySQL\", \"level\": \"متقدم\" },\r\n      { \"name\": \"JavaScript\", \"level\": \"متوسط\" },\r\n      { \"name\": \"تصميم بنية الأنظمة\", \"level\": \"متقدم\" }\r\n    ],\r\n    \"languages\": [\r\n      { \"name\": \"العربية\", \"level\": \"اللغة الأم\" },\r\n      { \"name\": \"الإنجليزية\", \"level\": \"متقدم\" }\r\n    ],\r\n    \"certifications\": [\r\n      {\r\n        \"name\": \"هندسة البرمجيات المتقدمة\",\r\n        \"issuer\": \"أكاديمية رواد التقنية\",\r\n        \"date\": \"2019-09-01\"\r\n      }\r\n    ]\r\n  }\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/cv/store",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "cv",
+                "store"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get CV",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{mobile_url}}/cv/95",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "cv",
+                "95"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update CV",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"template_id\": 4,\r\n  \"language\": \"ar\",\r\n  \"data\": {\r\n    \"personal_info\": {\r\n      \"name\": \" محمد عبد الرحمن\",\r\n      \"email\": \"ahmed.backend.dev@example.com\",\r\n      \"phone\": \"01024567891\",\r\n      \"address\": \"القاهرة، مصر\",\r\n      \"job_title\": \"مطور نظم خلفية أول\",\r\n      \"summary\": \"مطور نظم خلفية أول يمتلك خبرة واسعة في بناء أنظمة خلفية قوية وقابلة للتوسع باستخدام Laravel وPHP وMySQL. متخصص في تصميم واجهات برمجة التطبيقات (RESTful APIs)، تحسين أداء قواعد البيانات، وتنفيذ أنظمة المصادقة والصلاحيات بأعلى معايير الأمان. لديه خبرة قوية في تصميم بنية الأنظمة وتحسين جودة الكود والعمل ضمن فرق تطوير كبيرة.\"\r\n    },\r\n    \"education\": [\r\n      {\r\n        \"degree\": \"بكالوريوس علوم الحاسب\",\r\n        \"institution\": \"جامعة القاهرة\",\r\n        \"start_date\": \"2014-09-01\",\r\n        \"end_date\": \"2018-06-01\"\r\n      }\r\n    ],\r\n    \"experience\": [\r\n      {\r\n        \"position\": \"مطور نظم خلفية أول\",\r\n        \"company\": \"Digital Horizon\",\r\n        \"start_date\": \"2021-01-01\",\r\n        \"current\": true,\r\n        \"description\": \"قيادة تطوير الأنظمة الخلفية لعدة مشاريع تشمل: • أنظمة ERP متكاملة: تطوير وحدات الحسابات، الموارد البشرية، والمخزون. • منصات SaaS: تصميم API مرنة، إدارة الاشتراكات، وتحسين الأداء العام. • منصات تعليمية: بناء أنظمة LMS، إدارة الاختبارات، وتتبع تقدم الطلاب. • متاجر إلكترونية: تطوير أنظمة الطلبات، الدفع الإلكتروني، والتكامل مع بوابات الدفع.\"\r\n      },\r\n      {\r\n        \"position\": \"مطور نظم خلفية\",\r\n        \"company\": \"CodeWave Solutions\",\r\n        \"start_date\": \"2018-07-01\",\r\n        \"end_date\": \"2020-12-01\"\r\n      }\r\n    ],\r\n    \"skills\": [\r\n      { \"name\": \"PHP\", \"level\": \"متقدم\" },\r\n      { \"name\": \"Laravel\", \"level\": \"خبير\" },\r\n      { \"name\": \"MySQL\", \"level\": \"متقدم\" },\r\n      { \"name\": \"JavaScript\", \"level\": \"متوسط\" },\r\n      { \"name\": \"تصميم بنية الأنظمة\", \"level\": \"متقدم\" }\r\n    ],\r\n    \"languages\": [\r\n      { \"name\": \"العربية\", \"level\": \"اللغة الأم\" },\r\n      { \"name\": \"الإنجليزية\", \"level\": \"متقدم\" }\r\n    ],\r\n    \"certifications\": [\r\n      {\r\n        \"name\": \"هندسة البرمجيات المتقدمة\",\r\n        \"issuer\": \"أكاديمية رواد التقنية\",\r\n        \"date\": \"2019-09-01\"\r\n      }\r\n    ]\r\n  }\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/cv/95",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "cv",
+                "95"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download CV PDF",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/cv/95/pdf",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "cv",
+                "95",
+                "pdf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "preview CV",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/cv/95/pdf",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "cv",
+                "95",
+                "pdf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete CV",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/cv/96",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "cv",
+                "96"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Ad Reports",
+      "item": [
+        {
+          "name": "Add AD Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ad_id\": 55,\r\n    \"reason\": \"665589\",\r\n    \"description\": \"4849484\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/add-report-ad",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "add-report-ad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Reports",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/user-reports",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "user-reports"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Report",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/reports/1",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "reports",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "promotion packages",
+      "item": [
+        {
+          "name": "GET All Packages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/promotion-packages",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "promotion-packages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET By type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/promotion-packages?promotion_type=banner&banner_type=homepage ",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "promotion-packages"
+              ],
+              "query": [
+                {
+                  "key": "promotion_type",
+                  "value": "banner",
+                  "description": "enter (banner or featured)"
+                },
+                {
+                  "key": "banner_type",
+                  "value": "homepage ",
+                  "description": "enter (homepage or category_page) \ndont use it if promotion_type = featured"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "promotion-requests",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "ad_id",
+                  "value": "2990",
+                  "type": "text"
+                },
+                {
+                  "key": "promotion_type",
+                  "value": "featured",
+                  "type": "text"
+                },
+                {
+                  "key": "promotion_package_id",
+                  "value": "13",
+                  "type": "text"
+                },
+                {
+                  "key": "banner_type",
+                  "value": "homepage",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "banner_image",
+                  "type": "file",
+                  "src": "/F:/files/old_files/img/2.jpg",
+                  "disabled": true
+                },
+                {
+                  "key": "logo_image",
+                  "type": "file",
+                  "src": "/F:/files/old_files/img/Awesome Wallpapers 2.jpg",
+                  "disabled": true
+                },
+                {
+                  "key": "primary_color",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "secondary_color",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "additional_details",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{mobile_url}}/promotion-requests",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "promotion-requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://fayrouza.sdevelopment.tech/storage/2284/2.jpg",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://fayrouza.sdevelopment.tech/storage/2284/2.jpg",
+              "protocol": "https",
+              "host": [
+                "fayrouza",
+                "sdevelopment",
+                "tech"
+              ],
+              "path": [
+                "storage",
+                "2284",
+                "2.jpg"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contact Message",
+      "item": [
+        {
+          "name": "send message",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/contact-messages?name=awadrsrsr&email=rttyguguyyftfy@gmail.com&phone=045484144545&subject=tuuyiuiiiiji&message=fyugiohioui78figiihi",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "contact-messages"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "awadrsrsr"
+                },
+                {
+                  "key": "email",
+                  "value": "rttyguguyyftfy@gmail.com"
+                },
+                {
+                  "key": "phone",
+                  "value": "045484144545"
+                },
+                {
+                  "key": "subject",
+                  "value": "tuuyiuiiiiji"
+                },
+                {
+                  "key": "message",
+                  "value": "fyugiohioui78figiihi"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{mobile_url}}/notifications/2",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "notifications",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{mobile_url}}/notifications",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Referrals",
+      "item": [
+        {
+          "name": "Create Referral",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"friend_email\": \"friend@example.com\",\r\n    \"friend_phone\": \"015088488877\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/create-referral",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "create-referral"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Referral Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"friend_email\": \"friend@example.com\",\r\n    \"friend_phone\": \"01234567891\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/template/2/create-referral",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "template",
+                "2",
+                "create-referral"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App Rating",
+      "item": [
+        {
+          "name": "app-rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|TY5GWOmEWZahVvXovqQ7kZnvLF4EfabAGgCvBKSQ5314e8b8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"platform\": \"google_play\",    // \"google_play\" or \"app_store\"\t\r\n   \"rating\": \"3\",                // 1 : 5\r\n   \"review\": \"تطبيق مفيد جدا\"    // nullable \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{mobile_url}}/app-rating",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "app-rating"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "app-rating/check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|TY5GWOmEWZahVvXovqQ7kZnvLF4EfabAGgCvBKSQ5314e8b8",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{mobile_url}}/app-rating-check",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "app-rating-check"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Favorites Categories",
+      "item": [
+        {
+          "name": "add to favourite",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"category_id\": \"1355\"\r\n}"
+            },
+            "url": {
+              "raw": "{{mobile_url}}/favourite-categories",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "favourite-categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "remove from favourite",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{mobile_url}}/favourite-categories/1",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "favourite-categories",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Favourite Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/favourite-categories",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "favourite-categories"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Account Recovery",
+      "item": [
+        {
+          "name": "Send Request Recovery",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "test22@gmail.com",
+                  "type": "text",
+                  "uuid": "7d36be33-18ff-4291-ad55-e0d70d429694"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{mobile_url}}/account-recovery/request",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "account-recovery",
+                "request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Recovery",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "test22@gmail.com",
+                  "type": "text",
+                  "uuid": "7d36be33-18ff-4291-ad55-e0d70d429694"
+                },
+                {
+                  "key": "otp",
+                  "value": "1234",
+                  "type": "text",
+                  "uuid": "91e00a24-e21e-4e1c-b44d-7a89a302ccf8"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{mobile_url}}/account-recovery/confirm",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "account-recovery",
+                "confirm"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Update location",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{mobile_url}}/user/location?country_id=1&city_id=1",
+              "host": [
+                "{{mobile_url}}"
+              ],
+              "path": [
+                "user",
+                "location"
+              ],
+              "query": [
+                {
+                  "key": "country_id",
+                  "value": "1"
+                },
+                {
+                  "key": "city_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Home Page",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "ar",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "bearer 11|5GqdSpmtUETAma6Py66nZeEQibFz3j6pFWiPfNx54884b01f",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{mobile_url}}/home-page",
+          "host": [
+            "{{mobile_url}}"
+          ],
+          "path": [
+            "home-page"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get types",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "ar",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "bearer 2|tfeWpzvs88E2dBQ1Ya3rk1d1pAnLFlLf9jbPrrfP0aefc205",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{mobile_url}}/ad-types",
+          "host": [
+            "{{mobile_url}}"
+          ],
+          "path": [
+            "ad-types"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get type fields",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "ar",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "bearer 2|tfeWpzvs88E2dBQ1Ya3rk1d1pAnLFlLf9jbPrrfP0aefc205",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{mobile_url}}/get-types-fields?type_id=1",
+          "host": [
+            "{{mobile_url}}"
+          ],
+          "path": [
+            "get-types-fields"
+          ],
+          "query": [
+            {
+              "key": "type_id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Promotions",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "ar",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "bearer 1|TY5GWOmEWZahVvXovqQ7kZnvLF4EfabAGgCvBKSQ5314e8b8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{mobile_url}}/promotions",
+          "host": [
+            "{{mobile_url}}"
+          ],
+          "path": [
+            "promotions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "home-search",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": []
+        },
+        "url": {
+          "raw": "{{mobile_url}}/ads/search?search=mohamed&country_id=8",
+          "host": [
+            "{{mobile_url}}"
+          ],
+          "path": [
+            "ads",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "mohamed"
+            },
+            {
+              "key": "country_id",
+              "value": "8"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Featured Categories Ads",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "ar",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "bearer 1|eLhSPYf2wAubhIMcujDd75zU8IWwNKkoYylFtJaba2f11825",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{mobile_url}}/featured-categories-ads",
+          "host": [
+            "{{mobile_url}}"
+          ],
+          "path": [
+            "featured-categories-ads"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          "pm.request.headers.add({key: 'Accept-Language', value: 'ar' });",
+          "pm.request.headers.add({key: 'Accept', value: 'application/json' });",
+          "pm.request.headers.add({key: 'Content-Type', value: 'application/json' });",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "mobile_url",
+      "value": "https://fayrouza.sdevelopment.tech/api"
+    },
+    {
+      "key": "mobile_url",
+      "value": "http://127.0.0.1:8000/api",
+      "disabled": true
+    },
+    {
+      "key": "token",
+      "value": "553|brnRwECzbkzJP8D0HOpDphlAit1Ny4ux5SCdF5rH646ee4f0"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(docker version *)",
+      "Bash(docker compose *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3001\")",
+      "Bash(tasklist /FI \"PID eq 33624\")",
+      "Bash(powershell \"Get-Process -Id 33624 | Select-Object Name, Id, Path\")",
+      "Bash(python -m json.tool)",
+      "Bash(docker exec *)",
+      "Bash(node -e ' *)",
+      "Bash(git rm *)"
+    ]
+  }
+}

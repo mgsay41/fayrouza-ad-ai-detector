@@ -5,13 +5,22 @@ import { retry } from "../../utils/retry";
 import logger from "../../utils/logger";
 import { isSafeUrl } from "../../utils/ssrf";
 
+export type CallbackBody = {
+  decision: string;
+  score: number;
+  reasoning: string;
+  violations: string[];
+  concerns: string[];
+};
+
 export async function updateAdStatus(
   adId: number,
-  status: number
+  status: number,
+  moderationData?: CallbackBody
 ): Promise<void> {
   await retry(
     async () => {
-      await fayrouzaClient.post(`/ads/update/${adId}`, null, {
+      await fayrouzaClient.post(`/ads/update/${adId}`, moderationData ?? null, {
         params: { status },
       });
     },
@@ -24,6 +33,18 @@ export async function updateAdStatus(
       },
     }
   );
+}
+
+export function buildCallbackBody(
+  result: ModerationResult
+): CallbackBody {
+  return {
+    decision: result.decision,
+    score: result.final_score,
+    reasoning: result.reasoning,
+    violations: result.violations,
+    concerns: result.concerns,
+  };
 }
 
 export async function postCallback(

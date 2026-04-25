@@ -1,7 +1,7 @@
 import Queue from "bull";
 import { config } from "../../config";
 import { runModeration } from "../moderation/engine";
-import { updateAdStatus, postCallback } from "../fayrouza/adService";
+import { updateAdStatus, postCallback, buildCallbackBody } from "../fayrouza/adService";
 import { ModerationRequest } from "../../schemas/moderationRequest";
 import logger from "../../utils/logger";
 
@@ -50,7 +50,13 @@ moderationQueue.process(config.queueConcurrency, async (job) => {
     });
 
     try {
-      await updateAdStatus(ad_id, 3);
+      await updateAdStatus(ad_id, 3, {
+        decision: "NEEDS_REVIEW",
+        score: 0,
+        reasoning: `Moderation failed: ${error instanceof Error ? error.message : String(error)}`,
+        violations: [],
+        concerns: [],
+      });
     } catch (statusError) {
       logger.error("Failed to set ad to needs_review after moderation failure", {
         ad_id,
@@ -81,7 +87,7 @@ moderationQueue.process(config.queueConcurrency, async (job) => {
   }
 
   try {
-    await updateAdStatus(ad_id, result.fayrouza_status);
+    await updateAdStatus(ad_id, result.fayrouza_status, buildCallbackBody(result));
     logger.info("Ad status updated in Fayrouza", {
       job_id: job.id,
       ad_id,

@@ -1,0 +1,687 @@
+{
+	"info": {
+		"_postman_id": "fayrouza-ai-detector-api-collection",
+		"name": "Fayrouza Ad AI Detector API",
+		"description": "API collection for testing the Fayrouza Ad AI Detector backend. Includes all endpoints with example requests and responses.\n\n## Authentication\nAll protected endpoints require an `X-API-Key` header. There are three API key scopes:\n- **webhook**: Used for `POST /webhook/moderate`\n- **internal**: Used for `POST /api/ads/moderate`\n- **admin**: Used for `POST /api/admin/override` and `GET /api/admin/audit`\n\nSet your API keys in the collection variables before testing.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "GET /health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						},
+						"description": "Returns server health status, uptime, and queue stats. No authentication required."
+					},
+					"response": [
+						{
+							"name": "200 - Healthy",
+							"originalRequest": {
+								"method": "GET",
+								"url": {
+									"raw": "{{base_url}}/health",
+									"host": ["{{base_url}}"],
+									"path": ["health"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"status\": \"ok\",\n\t\"uptime\": 12345.678,\n\t\"timestamp\": \"2026-04-25T12:00:00.000Z\",\n\t\"queue\": {\n\t\t\"waiting\": 0,\n\t\t\"active\": 1,\n\t\t\"completed\": 42,\n\t\t\"failed\": 1,\n\t\t\"delayed\": 0\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Webhook Moderation",
+			"item": [
+				{
+					"name": "POST /webhook/moderate - Approve Example",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-API-Key",
+								"value": "{{webhook_api_key}}",
+								"description": "Webhook scope API key"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_id\": 123,\n\t\"title\": \"iPhone 15 Pro Max 256GB - Brand New\",\n\t\"description\": \"Selling my brand new iPhone 15 Pro Max, 256GB, Natural Titanium. Unopened box with full Apple warranty. Purchased from Apple Store Citystars last week. Price is firm.\",\n\t\"price\": 45000,\n\t\"category\": \"Electronics\",\n\t\"imageUrl\": \"https://example.com/iphone15.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook/moderate",
+							"host": ["{{base_url}}"],
+							"path": ["webhook", "moderate"]
+						},
+						"description": "Synchronous ad moderation. The AI analyzes the ad text and optional image, then returns a moderation decision immediately.\n\n**Fields accepted:**\n- `ad_id` (optional): Ad ID number\n- `title` or `ad_title` (required): Ad title, 1-500 chars\n- `description` or `ad_description` (required): Ad description, 1-5000 chars\n- `price` or `ad_price` (optional): Price, defaults to 0\n- `category` or `ad_category` (required): Category, 1-100 chars\n- `imageUrl` or `image` (optional): Image URL for AI analysis"
+					},
+					"response": [
+						{
+							"name": "200 - Auto Approved",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{webhook_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_id\": 123,\n\t\"title\": \"iPhone 15 Pro Max 256GB\",\n\t\"description\": \"Brand new iPhone, full warranty.\",\n\t\"price\": 45000,\n\t\"category\": \"Electronics\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/webhook/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["webhook", "moderate"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"data\": {\n\t\t\"decision\": \"AUTO_APPROVED\",\n\t\t\"confidence_score\": 92,\n\t\t\"reasoning\": \"The ad appears to be a legitimate electronics listing with accurate pricing and clear description. No policy violations detected.\",\n\t\t\"processed_at\": \"2026-04-25T12:00:00.000Z\",\n\t\t\"details\": {\n\t\t\t\"text_decision\": \"approve\",\n\t\t\t\"text_confidence\": 92,\n\t\t\t\"text_reasoning\": \"Legitimate product listing with realistic price.\",\n\t\t\t\"text_violations\": [],\n\t\t\t\"text_concerns\": [],\n\t\t\t\"image_decision\": null,\n\t\t\t\"image_confidence\": null,\n\t\t\t\"image_reasoning\": null,\n\t\t\t\"image_violations\": [],\n\t\t\t\"image_concerns\": []\n\t\t}\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "200 - Needs Review",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{webhook_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_id\": 456,\n\t\"title\": \"Quick money opportunity!!!\",\n\t\"description\": \"Make 5000 EGP daily from home, no experience needed. Contact me for details.\",\n\t\"price\": 0,\n\t\"category\": \"Services\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/webhook/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["webhook", "moderate"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"data\": {\n\t\t\"decision\": \"NEEDS_REVIEW\",\n\t\t\"confidence_score\": 55,\n\t\t\"reasoning\": \"The ad contains suspicious financial claims that may violate advertising policies.\",\n\t\t\"processed_at\": \"2026-04-25T12:00:00.000Z\",\n\t\t\"details\": {\n\t\t\t\"text_decision\": \"review\",\n\t\t\t\"text_confidence\": 55,\n\t\t\t\"text_reasoning\": \"Get-rich-quick scheme language detected.\",\n\t\t\t\"text_violations\": [],\n\t\t\t\"text_concerns\": [\"Unrealistic income claims\", \"Vague service description\"],\n\t\t\t\"image_decision\": null,\n\t\t\t\"image_confidence\": null,\n\t\t\t\"image_reasoning\": null,\n\t\t\t\"image_violations\": [],\n\t\t\t\"image_concerns\": []\n\t\t}\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "200 - Auto Rejected",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{webhook_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_id\": 789,\n\t\"title\": \"Banned substance for sale\",\n\t\"description\": \"Selling prohibited items cheap. Contact via phone only, cash only.\",\n\t\"price\": 500,\n\t\"category\": \"Other\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/webhook/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["webhook", "moderate"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"data\": {\n\t\t\"decision\": \"AUTO_REJECTED\",\n\t\t\"confidence_score\": 15,\n\t\t\"reasoning\": \"The ad promotes the sale of prohibited/banned substances which violates platform policies.\",\n\t\t\"processed_at\": \"2026-04-25T12:00:00.000Z\",\n\t\t\"details\": {\n\t\t\t\"text_decision\": \"reject\",\n\t\t\t\"text_confidence\": 15,\n\t\t\t\"text_reasoning\": \"Prohibited substance sale detected.\",\n\t\t\t\"text_violations\": [\"Prohibited items\", \"Illegal goods\"],\n\t\t\t\"text_concerns\": [\"Cash-only transaction\", \"Phone-only contact\"],\n\t\t\t\"image_decision\": null,\n\t\t\t\"image_confidence\": null,\n\t\t\t\"image_reasoning\": null,\n\t\t\t\"image_violations\": [],\n\t\t\t\"image_concerns\": []\n\t\t}\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "400 - Validation Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{webhook_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_id\": 123\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/webhook/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["webhook", "moderate"]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Validation failed\",\n\t\"code\": \"VALIDATION_ERROR\",\n\t\"details\": [\n\t\t{ \"field\": \"title\", \"message\": \"Either 'title' or 'ad_title' is required\" },\n\t\t{ \"field\": \"description\", \"message\": \"Either 'description' or 'ad_description' is required\" },\n\t\t{ \"field\": \"category\", \"message\": \"Either 'category' or 'ad_category' is required\" }\n\t]\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "401 - Missing API Key",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"test\",\n\t\"description\": \"test\",\n\t\"category\": \"test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/webhook/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["webhook", "moderate"]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Missing X-API-Key header\",\n\t\"code\": \"UNAUTHORIZED\"\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "403 - Invalid API Key",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "wrong-key" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"test\",\n\t\"description\": \"test\",\n\t\"category\": \"test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/webhook/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["webhook", "moderate"]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Invalid API key\",\n\t\"code\": \"FORBIDDEN\"\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "429 - Rate Limited",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{webhook_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"test\",\n\t\"description\": \"test\",\n\t\"category\": \"test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/webhook/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["webhook", "moderate"]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Too many requests to webhook endpoint\",\n\t\"code\": \"RATE_LIMITED\"\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				},
+				{
+					"name": "POST /webhook/moderate - Alternative Field Names",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-API-Key",
+								"value": "{{webhook_api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_id\": 999,\n\t\"ad_title\": \"Samsung Galaxy S24 Ultra 512GB\",\n\t\"ad_description\": \"Selling my Samsung Galaxy S24 Ultra in excellent condition. Comes with original charger and case. No scratches.\",\n\t\"ad_price\": 38000,\n\t\"ad_category\": \"Electronics\",\n\t\"image\": \"https://example.com/samsung-s24.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook/moderate",
+							"host": ["{{base_url}}"],
+							"path": ["webhook", "moderate"]
+						},
+						"description": "Same endpoint but using the `ad_`-prefixed field names (`ad_title`, `ad_description`, `ad_price`, `ad_category`, `image`). Both naming conventions are accepted."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Async Moderation (Queue)",
+			"item": [
+				{
+					"name": "POST /api/ads/moderate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-API-Key",
+								"value": "{{internal_api_key}}",
+								"description": "Internal scope API key"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_id\": 456,\n\t\"ad_title\": \"2019 Toyota Corolla - Excellent Condition\",\n\t\"ad_description\": \"Selling my 2019 Toyota Corolla, 80,000 km, automatic transmission. Full service history at Toyota dealer. New tires, AC works perfectly. Price is negotiable.\",\n\t\"ad_price\": 650000,\n\t\"ad_category\": \"Cars\",\n\t\"image\": \"https://example.com/corolla2019.jpg\",\n\t\"user_id\": 42,\n\t\"callback_url\": \"https://your-server.com/callback/moderation\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ads/moderate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ads", "moderate"]
+						},
+						"description": "Asynchronous ad moderation. Adds the ad to a Redis-backed queue for processing. Returns immediately with a job ID.\n\n**Required fields:** `ad_id`, `ad_title`, `ad_description`, `ad_price`, `ad_category`\n**Optional fields:** `image` (URL), `user_id`, `callback_url`\n\nIf `callback_url` is provided, the full moderation result will be POSTed there when processing completes."
+					},
+					"response": [
+						{
+							"name": "202 - Job Queued",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{internal_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_id\": 456,\n\t\"ad_title\": \"Toyota Corolla\",\n\t\"ad_description\": \"Excellent condition\",\n\t\"ad_price\": 650000,\n\t\"ad_category\": \"Cars\"\n\t}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/ads/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["api", "ads", "moderate"]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"job_id\": \"mod_456_1714046400000\",\n\t\"estimated_seconds\": 15\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "400 - Validation Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{internal_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_title\": \"Test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/ads/moderate",
+									"host": ["{{base_url}}"],
+									"path": ["api", "ads", "moderate"]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Validation failed\",\n\t\"code\": \"VALIDATION_ERROR\",\n\t\"details\": [\n\t\t{ \"field\": \"ad_id\", \"message\": \"Required\" },\n\t\t{ \"field\": \"ad_description\", \"message\": \"Required\" },\n\t\t{ \"field\": \"ad_price\", \"message\": \"Required\" },\n\t\t{ \"field\": \"ad_category\", \"message\": \"Required\" }\n\t]\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "POST /api/admin/override",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-API-Key",
+								"value": "{{admin_api_key}}",
+								"description": "Admin scope API key"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_id\": 456,\n\t\"decision\": \"AUTO_APPROVED\",\n\t\"reason\": \"Admin reviewed the ad manually and confirmed it complies with marketplace policies.\",\n\t\"reviewer_id\": 5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/override",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "override"]
+						},
+						"description": "Manual admin decision override. Updates the ad status in the Fayrouza marketplace and logs an audit entry.\n\n**Required fields:**\n- `ad_id`: Positive integer\n- `decision`: One of `AUTO_APPROVED`, `NEEDS_REVIEW`, `AUTO_REJECTED`\n- `reason`: 1-1000 characters\n- `reviewer_id`: Positive integer\n\n**Fayrouza status mapping:**\n- `AUTO_APPROVED` -> status 1 (active)\n- `NEEDS_REVIEW` -> status 3 (pending/review)\n- `AUTO_REJECTED` -> status 4 (rejected)"
+					},
+					"response": [
+						{
+							"name": "200 - Override Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{admin_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_id\": 456,\n\t\"decision\": \"AUTO_APPROVED\",\n\t\"reason\": \"Admin approved after review.\",\n\t\"reviewer_id\": 5\n\t}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/override",
+									"host": ["{{base_url}}"],
+									"path": ["api", "admin", "override"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"data\": {\n\t\t\"ad_id\": 456,\n\t\t\"decision\": \"AUTO_APPROVED\",\n\t\t\"fayrouza_status\": 1,\n\t\t\"reason\": \"Admin approved after review.\",\n\t\t\"reviewer_id\": 5,\n\t\t\"overridden_at\": \"2026-04-25T12:00:00.000Z\"\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "400 - Invalid Decision",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{ "key": "Content-Type", "value": "application/json" },
+									{ "key": "X-API-Key", "value": "{{admin_api_key}}" }
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ad_id\": 456,\n\t\"decision\": \"INVALID\",\n\t\"reason\": \"test\",\n\t\"reviewer_id\": 5\n\t}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/override",
+									"host": ["{{base_url}}"],
+									"path": ["api", "admin", "override"]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Validation failed\",\n\t\"code\": \"VALIDATION_ERROR\",\n\t\"details\": [\n\t\t{\n\t\t\t\"field\": \"decision\",\n\t\t\t\"message\": \"Invalid enum value. Expected 'AUTO_APPROVED' | 'NEEDS_REVIEW' | 'AUTO_REJECTED'\"\n\t\t}\n\t]\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				},
+				{
+					"name": "GET /api/admin/audit",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{admin_api_key}}",
+								"description": "Admin scope API key"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/audit?limit=20&offset=0",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "audit"],
+							"query": [
+								{
+									"key": "ad_id",
+									"value": "",
+									"description": "Filter by ad ID (optional)",
+									"disabled": true
+								},
+								{
+									"key": "decision",
+									"value": "",
+									"description": "Filter by decision: AUTO_APPROVED | NEEDS_REVIEW | AUTO_REJECTED (optional)",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Results per page (1-100, default 20)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Pagination offset (default 0)"
+								}
+							]
+						},
+						"description": "Query the audit log. Returns moderation and admin override entries sorted newest-first.\n\n**Query parameters (all optional):**\n- `ad_id`: Filter by specific ad\n- `decision`: Filter by decision type\n- `limit`: Results per page (1-100, default 20)\n- `offset`: Pagination offset (default 0)"
+					},
+					"response": [
+						{
+							"name": "200 - Audit Entries",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{ "key": "X-API-Key", "value": "{{admin_api_key}}" }
+								],
+								"url": {
+									"raw": "{{base_url}}/api/admin/audit?limit=20&offset=0",
+									"host": ["{{base_url}}"],
+									"path": ["api", "admin", "audit"],
+									"query": [
+										{ "key": "limit", "value": "20" },
+										{ "key": "offset", "value": "0" }
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"data\": {\n\t\t\"entries\": [\n\t\t\t{\n\t\t\t\t\"ad_id\": 123,\n\t\t\t\t\"decision\": \"AUTO_APPROVED\",\n\t\t\t\t\"confidence_score\": 92,\n\t\t\t\t\"violations\": [],\n\t\t\t\t\"processing_ms\": 3200,\n\t\t\t\t\"source\": \"gemini_analysis\",\n\t\t\t\t\"created_at\": \"2026-04-25T12:00:00.000Z\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ad_id\": 456,\n\t\t\t\t\"decision\": \"AUTO_APPROVED\",\n\t\t\t\t\"source\": \"admin_override\",\n\t\t\t\t\"reason\": \"Admin approved after review.\",\n\t\t\t\t\"reviewer_id\": 5,\n\t\t\t\t\"created_at\": \"2026-04-25T11:30:00.000Z\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ad_id\": 789,\n\t\t\t\t\"decision\": \"AUTO_REJECTED\",\n\t\t\t\t\"confidence_score\": 15,\n\t\t\t\t\"violations\": [\"Prohibited items\", \"Illegal goods\"],\n\t\t\t\t\"processing_ms\": 2800,\n\t\t\t\t\"source\": \"gemini_analysis\",\n\t\t\t\t\"created_at\": \"2026-04-25T11:00:00.000Z\"\n\t\t\t}\n\t\t],\n\t\t\"count\": 3,\n\t\t\"limit\": 20,\n\t\t\"offset\": 0\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "200 - Filtered by ad_id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{ "key": "X-API-Key", "value": "{{admin_api_key}}" }
+								],
+								"url": {
+									"raw": "{{base_url}}/api/admin/audit?ad_id=123",
+									"host": ["{{base_url}}"],
+									"path": ["api", "admin", "audit"],
+									"query": [
+										{ "key": "ad_id", "value": "123" }
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"data\": {\n\t\t\"entries\": [\n\t\t\t{\n\t\t\t\t\"ad_id\": 123,\n\t\t\t\t\"decision\": \"AUTO_APPROVED\",\n\t\t\t\t\"confidence_score\": 92,\n\t\t\t\t\"violations\": [],\n\t\t\t\t\"processing_ms\": 3200,\n\t\t\t\t\"source\": \"gemini_analysis\",\n\t\t\t\t\"created_at\": \"2026-04-25T12:00:00.000Z\"\n\t\t\t}\n\t\t],\n\t\t\"count\": 1,\n\t\t\"limit\": 20,\n\t\t\"offset\": 0\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						},
+						{
+							"name": "200 - Empty Results",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{ "key": "X-API-Key", "value": "{{admin_api_key}}" }
+								],
+								"url": {
+									"raw": "{{base_url}}/api/admin/audit?ad_id=999999",
+									"host": ["{{base_url}}"],
+									"path": ["api", "admin", "audit"],
+									"query": [
+										{ "key": "ad_id", "value": "999999" }
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": true,\n\t\"data\": {\n\t\t\"entries\": [],\n\t\t\"count\": 0,\n\t\t\"limit\": 20,\n\t\t\"offset\": 0\n\t}\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Error Responses (Reference)",
+			"item": [
+				{
+					"name": "401 - Unauthorized (Missing API Key)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/audit",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "audit"]
+						},
+						"description": "Returned when X-API-Key header is missing from a protected endpoint."
+					},
+					"response": [
+						{
+							"name": "401 - Unauthorized",
+							"status": "Unauthorized",
+							"code": 401,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Missing X-API-Key header\",\n\t\"code\": \"UNAUTHORIZED\"\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				},
+				{
+					"name": "403 - Forbidden (Wrong API Key)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "wrong-api-key"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/audit",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "audit"]
+						},
+						"description": "Returned when the provided API key does not match the expected key for the endpoint's scope."
+					},
+					"response": [
+						{
+							"name": "403 - Forbidden",
+							"status": "Forbidden",
+							"code": 403,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Invalid API key\",\n\t\"code\": \"FORBIDDEN\"\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				},
+				{
+					"name": "500 - Internal Server Error",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						},
+						"description": "Returned when an unexpected error occurs on the server."
+					},
+					"response": [
+						{
+							"name": "500 - Internal Error",
+							"status": "Internal Server Error",
+							"code": 500,
+							"header": [
+								{ "key": "Content-Type", "value": "application/json" }
+							],
+							"body": "{\n\t\"success\": false,\n\t\"error\": \"Internal server error\",\n\t\"code\": \"INTERNAL_ERROR\"\n}",
+							"_postman_previewlanguage": "json"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://54.38.240.143:3001",
+			"type": "string"
+		},
+		{
+			"key": "webhook_api_key",
+			"value": "fyr_wh_e97a0484b150202e39292166c06c5ece216ed27f306ce6012daf2b3171561a16",
+			"type": "string"
+		},
+		{
+			"key": "internal_api_key",
+			"value": "fyr_int_f0ea05c3429a2a2bcece4a3e561792d2e2ee84f5dcc54a4d64c7a6fe6ae2196f",
+			"type": "string"
+		},
+		{
+			"key": "admin_api_key",
+			"value": "fyr_adm_3392951e9021e03c5c2b7b37cd538be82fd64eb918d8e1e674d7669a766ef44f",
+			"type": "string"
+		}
+	]
+}

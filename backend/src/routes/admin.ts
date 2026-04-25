@@ -29,7 +29,13 @@ router.post(
       const fayrouzaStatus = mapDecisionToStatus(decision);
 
       try {
-        await updateAdStatus(ad_id, fayrouzaStatus);
+        await updateAdStatus(ad_id, fayrouzaStatus, {
+          decision,
+          score: 0,
+          reasoning: reason ?? "Admin override",
+          violations: [],
+          concerns: [],
+        });
       } catch (fayrouzaError) {
         logger.error("Failed to sync admin override to Fayrouza (override still recorded)", {
           ad_id,

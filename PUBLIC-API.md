@@ -21,6 +21,7 @@
 The **Fayrouza Ad AI Detector** is an AI-powered moderation API. Submit any marketplace ad (text + optional image) and receive an instant moderation decision powered by Google Gemini AI.
 
 The API evaluates ads for:
+
 - Policy compliance and prohibited items
 - Sharia-compliance (haram goods, interest-based finance, etc.)
 - Pricing anomalies and scam indicators
@@ -28,11 +29,11 @@ The API evaluates ads for:
 
 **Decisions returned:**
 
-| Decision | Meaning |
-|---|---|
-| `Approve` | Ad passes all checks — safe to publish |
-| `Review` | Ad flagged for human review — hold for manual check |
-| `Reject` | Ad clearly violates policies — do not publish |
+| Decision        | Meaning                                             |
+| --------------- | --------------------------------------------------- |
+| `AUTO_APPROVED` | Ad passes all checks — safe to publish              |
+| `NEEDS_REVIEW`  | Ad flagged for human review — hold for manual check |
+| `AUTO_REJECTED` | Ad clearly violates policies — do not publish       |
 
 **This is a synchronous API.** You send the request and receive the decision in the response body — no webhooks or callbacks required.
 
@@ -44,11 +45,11 @@ The API evaluates ads for:
 http://54.38.240.143:3001
 ```
 
-| Resource | URL |
-|---|---|
-| Interactive Swagger UI | `http://54.38.240.143:3001/docs` |
-| Raw OpenAPI JSON spec | `http://54.38.240.143:3001/openapi.json` |
-| Health check | `http://54.38.240.143:3001/health` |
+| Resource               | URL                                      |
+| ---------------------- | ---------------------------------------- |
+| Interactive Swagger UI | `http://54.38.240.143:3001/docs`         |
+| Raw OpenAPI JSON spec  | `http://54.38.240.143:3001/openapi.json` |
+| Health check           | `http://54.38.240.143:3001/health`       |
 
 **Tip:** Open `/docs` in your browser to explore and test the API interactively without writing any code.
 
@@ -61,7 +62,7 @@ http://54.38.240.143:3001
 All requests to `POST /v1/moderate` must include your API key in the `X-API-Key` header.
 
 ```
-X-API-Key: your_public_api_key_here
+X-API-Key: fyr_wh_e97a0484b150202e39292166c06c5ece216ed27f306ce6012daf2b3171561a16
 ```
 
 Contact the Fayrouza team to receive your `PUBLIC_API_KEY`. Keep it secret — do not expose it in client-side JavaScript or public repositories.
@@ -76,45 +77,45 @@ Contact the Fayrouza team to receive your `PUBLIC_API_KEY`. Keep it secret — d
 
 Submit an ad for AI moderation. Returns a decision synchronously.
 
-| Property | Value |
-|---|---|
-| **Method** | `POST` |
-| **URL** | `http://54.38.240.143:3001/v1/moderate` |
-| **Auth** | `X-API-Key` header |
-| **Content-Type** | `application/json` |
-| **Rate limit** | 30 requests / minute per IP |
-| **Typical response time** | 5–15 seconds (Gemini AI processing) |
+| Property                  | Value                                   |
+| ------------------------- | --------------------------------------- |
+| **Method**                | `POST`                                  |
+| **URL**                   | `http://54.38.240.143:3001/v1/moderate` |
+| **Auth**                  | `X-API-Key` header                      |
+| **Content-Type**          | `application/json`                      |
+| **Rate limit**            | 30 requests / minute per IP             |
+| **Typical response time** | 5–15 seconds (Gemini AI processing)     |
 
 #### Request fields
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `title` | string (1–500 chars) | **Yes** | The ad title. Also accepted as `ad_title`. |
-| `description` | string (1–5000 chars) | **Yes** | The ad description. Also accepted as `ad_description`. |
-| `category` | string (1–100 chars) | **Yes** | The ad category (e.g. `"Electronics"`, `"Cars"`). Also accepted as `ad_category`. |
-| `price` | number (≥ 0) | No | The listed price. Also accepted as `ad_price`. |
-| `imageUrl` | string (URL) | No | Publicly accessible URL of the ad image. Triggers image moderation when provided. Also accepted as `image`. |
-| `ad_id` | integer | No | Your internal ad identifier. Used for logging and audit trail only. |
+| Field         | Type                  | Required | Description                                                                                                 |
+| ------------- | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
+| `title`       | string (1–500 chars)  | **Yes**  | The ad title. Also accepted as `ad_title`.                                                                  |
+| `description` | string (1–5000 chars) | **Yes**  | The ad description. Also accepted as `ad_description`.                                                      |
+| `category`    | string (1–100 chars)  | **Yes**  | The ad category (e.g. `"Electronics"`, `"Cars"`). Also accepted as `ad_category`.                           |
+| `price`       | number (≥ 0)          | No       | The listed price. Also accepted as `ad_price`.                                                              |
+| `imageUrl`    | string (URL)          | No       | Publicly accessible URL of the ad image. Triggers image moderation when provided. Also accepted as `image`. |
+| `ad_id`       | integer               | No       | Your internal ad identifier. Used for logging and audit trail only.                                         |
 
 #### Response fields
 
-| Field | Type | Description |
-|---|---|---|
-| `success` | boolean | Always `true` on a successful response |
-| `data.decision` | string | `"Approve"`, `"Review"`, or `"Reject"` |
-| `data.confidence_score` | integer (0–100) | Overall AI confidence. Higher = more certain. |
-| `data.reasoning` | string | Human-readable explanation of the decision |
-| `data.processed_at` | ISO 8601 datetime | When the analysis completed |
-| `data.details.text_decision` | string \| null | Text-only decision (`"approve"` / `"review"` / `"reject"`) |
-| `data.details.text_confidence` | integer \| null | Confidence score for text analysis |
-| `data.details.text_reasoning` | string \| null | Text analysis explanation |
-| `data.details.text_violations` | string[] | Policy violations found in the text |
-| `data.details.text_concerns` | string[] | Minor concerns found in the text |
-| `data.details.image_decision` | string \| null | Image-only decision. `null` if no `imageUrl` was provided. |
-| `data.details.image_confidence` | integer \| null | Confidence score for image analysis |
-| `data.details.image_reasoning` | string \| null | Image analysis explanation |
-| `data.details.image_violations` | string[] | Policy violations found in the image |
-| `data.details.image_concerns` | string[] | Minor concerns found in the image |
+| Field                           | Type              | Description                                                |
+| ------------------------------- | ----------------- | ---------------------------------------------------------- |
+| `success`                       | boolean           | Always `true` on a successful response                     |
+| `data.decision`                 | string            | `"AUTO_APPROVED"`, `"NEEDS_REVIEW"`, or `"AUTO_REJECTED"`  |
+| `data.confidence_score`         | integer (0–100)   | Overall AI confidence. Higher = more certain.              |
+| `data.reasoning`                | string            | Human-readable explanation of the decision                 |
+| `data.processed_at`             | ISO 8601 datetime | When the analysis completed                                |
+| `data.details.text_decision`    | string \| null    | Text-only decision (`"approve"` / `"review"` / `"reject"`) |
+| `data.details.text_confidence`  | integer \| null   | Confidence score for text analysis                         |
+| `data.details.text_reasoning`   | string \| null    | Text analysis explanation                                  |
+| `data.details.text_violations`  | string[]          | Policy violations found in the text                        |
+| `data.details.text_concerns`    | string[]          | Minor concerns found in the text                           |
+| `data.details.image_decision`   | string \| null    | Image-only decision. `null` if no `imageUrl` was provided. |
+| `data.details.image_confidence` | integer \| null   | Confidence score for image analysis                        |
+| `data.details.image_reasoning`  | string \| null    | Image analysis explanation                                 |
+| `data.details.image_violations` | string[]          | Policy violations found in the image                       |
+| `data.details.image_concerns`   | string[]          | Minor concerns found in the image                          |
 
 ---
 
@@ -163,7 +164,7 @@ curl http://54.38.240.143:3001/health
 {
   "success": true,
   "data": {
-    "decision": "Approve",
+    "decision": "AUTO_APPROVED",
     "confidence_score": 93,
     "reasoning": "The ad content is appropriate and complies with all marketplace policies. The product description is clear and honest, the price is realistic for the Egyptian market, and no prohibited items or scam indicators were detected.",
     "processed_at": "2026-04-29T10:00:05.123Z",
@@ -189,7 +190,7 @@ curl http://54.38.240.143:3001/health
 {
   "success": true,
   "data": {
-    "decision": "Reject",
+    "decision": "AUTO_REJECTED",
     "confidence_score": 15,
     "reasoning": "The ad promotes prohibited items that violate marketplace and Sharia policies.",
     "processed_at": "2026-04-29T10:00:04.800Z",
@@ -240,7 +241,8 @@ const response = await fetch("http://54.38.240.143:3001/v1/moderate", {
   },
   body: JSON.stringify({
     title: "iPhone 15 Pro Max 256GB - Brand New",
-    description: "Selling my brand new iPhone 15 Pro Max. Unopened box with full Apple warranty.",
+    description:
+      "Selling my brand new iPhone 15 Pro Max. Unopened box with full Apple warranty.",
     price: 45000,
     category: "Electronics",
   }),
@@ -248,12 +250,12 @@ const response = await fetch("http://54.38.240.143:3001/v1/moderate", {
 
 const { data } = await response.json();
 
-if (data.decision === "Approve") {
+if (data.decision === "AUTO_APPROVED") {
   // publish the ad
-} else if (data.decision === "Review") {
+} else if (data.decision === "NEEDS_REVIEW") {
   // send to manual review queue
 } else {
-  // reject the ad
+  // AUTO_REJECTED — do not publish
 }
 ```
 
@@ -268,7 +270,8 @@ const { data } = await axios.post(
   "http://54.38.240.143:3001/v1/moderate",
   {
     title: "iPhone 15 Pro Max 256GB - Brand New",
-    description: "Selling my brand new iPhone 15 Pro Max. Unopened box with full Apple warranty.",
+    description:
+      "Selling my brand new iPhone 15 Pro Max. Unopened box with full Apple warranty.",
     price: 45000,
     category: "Electronics",
   },
@@ -277,10 +280,10 @@ const { data } = await axios.post(
       "X-API-Key": process.env.MODERATION_API_KEY,
     },
     timeout: 30000, // 30s — AI processing takes up to 15s
-  }
+  },
 );
 
-console.log(data.data.decision); // "Approve" | "Review" | "Reject"
+console.log(data.data.decision); // "AUTO_APPROVED" | "NEEDS_REVIEW" | "AUTO_REJECTED"
 ```
 
 ---
@@ -335,9 +338,9 @@ $response = $client->post('http://54.38.240.143:3001/v1/moderate', [
 $result = json_decode($response->getBody(), true)['data'];
 
 match ($result['decision']) {
-    'Approve' => // activate the ad,
-    'Review'  => // send to review queue,
-    'Reject'  => // reject the ad,
+    'AUTO_APPROVED' => // activate the ad,
+    'NEEDS_REVIEW'  => // send to review queue,
+    'AUTO_REJECTED' => // reject the ad,
 };
 ```
 
@@ -451,7 +454,7 @@ func main() {
     var result ModerateResponse
     json.NewDecoder(resp.Body).Decode(&result)
 
-    fmt.Println(result.Data.Decision) // Approve | Review | Reject
+    fmt.Println(result.Data.Decision) // AUTO_APPROVED | NEEDS_REVIEW | AUTO_REJECTED
 }
 ```
 
@@ -524,11 +527,11 @@ The final decision is derived from two independent analyses — text and image �
 
 ```
 If either text OR image says "reject"  →  Reject  (regardless of score)
-Else if either says "review"           →  Review  (regardless of score)
+Else if either says "review"           →  NEEDS_REVIEW   (regardless of score)
 Else if both approve:
-    score >= 80  →  Approve
-    score 40–79  →  Review
-    score < 40   →  Reject
+    score >= 80  →  AUTO_APPROVED
+    score 40–79  →  NEEDS_REVIEW
+    score < 40   →  AUTO_REJECTED
 ```
 
 **What the AI checks for:**
@@ -544,18 +547,18 @@ Else if both approve:
 
 ## 8. Rate Limits
 
-| Endpoint | Limit |
-|---|---|
+| Endpoint            | Limit                       |
+| ------------------- | --------------------------- |
 | `POST /v1/moderate` | 30 requests / minute per IP |
-| `GET /health` | Unlimited |
+| `GET /health`       | Unlimited                   |
 
 Rate limit headers are included in every response:
 
-| Header | Description |
-|---|---|
-| `X-RateLimit-Limit` | Requests allowed per window |
-| `X-RateLimit-Remaining` | Requests left in the current window |
-| `X-RateLimit-Reset` | Unix timestamp when the window resets |
+| Header                  | Description                           |
+| ----------------------- | ------------------------------------- |
+| `X-RateLimit-Limit`     | Requests allowed per window           |
+| `X-RateLimit-Remaining` | Requests left in the current window   |
+| `X-RateLimit-Reset`     | Unix timestamp when the window resets |
 
 When the limit is exceeded, the API returns **HTTP 429**:
 
@@ -581,13 +584,13 @@ All errors follow the same shape:
 }
 ```
 
-| HTTP Status | Code | Cause |
-|---|---|---|
-| `400` | `VALIDATION_ERROR` | Missing or invalid request fields |
-| `401` | `UNAUTHORIZED` | `X-API-Key` header is missing |
-| `403` | `FORBIDDEN` | `X-API-Key` value is invalid |
-| `429` | `RATE_LIMITED` | Too many requests |
-| `500` | `INTERNAL_ERROR` | Server-side error (AI or network failure) |
+| HTTP Status | Code               | Cause                                     |
+| ----------- | ------------------ | ----------------------------------------- |
+| `400`       | `VALIDATION_ERROR` | Missing or invalid request fields         |
+| `401`       | `UNAUTHORIZED`     | `X-API-Key` header is missing             |
+| `403`       | `FORBIDDEN`        | `X-API-Key` value is invalid              |
+| `429`       | `RATE_LIMITED`     | Too many requests                         |
+| `500`       | `INTERNAL_ERROR`   | Server-side error (AI or network failure) |
 
 ### Validation error (400) — extra detail
 
@@ -636,7 +639,7 @@ curl -X POST http://54.38.240.143:3001/v1/moderate \
   }'
 ```
 
-Expected: HTTP 200, `"decision": "Approve"`.
+Expected: HTTP 200, `"decision": "AUTO_APPROVED"` or `"NEEDS_REVIEW"` (AI may flag for review on first submission).
 
 ---
 
@@ -654,7 +657,7 @@ curl -X POST http://54.38.240.143:3001/v1/moderate \
   }'
 ```
 
-Expected: HTTP 200, `"decision": "Reject"`, `text_violations` includes `"haram_item"`.
+Expected: HTTP 200, `"decision": "AUTO_REJECTED"` or `"NEEDS_REVIEW"`, `text_violations` may include `"haram_item"`.
 
 ---
 
@@ -719,15 +722,15 @@ Expected: HTTP 403, `"code": "FORBIDDEN"`.
 
 ## 11. Troubleshooting
 
-| Problem | What to check |
-|---|---|
-| Request hangs or times out | Set your HTTP client timeout to at least **30 seconds**. AI processing typically takes 5–15 seconds. |
-| Getting `401 UNAUTHORIZED` | Ensure the `X-API-Key` header is present in every request. |
-| Getting `403 FORBIDDEN` | Verify the API key value is correct with no extra whitespace or newlines. |
-| Getting `400 VALIDATION_ERROR` | Check that `title`, `description`, and `category` are all present and non-empty. `price` is optional but must be a number if provided. |
-| `imageUrl` not analyzed | The image URL must be publicly accessible (no auth required). The API fetches it server-side. |
-| Getting `429 RATE_LIMITED` | You have exceeded 30 requests/minute. Add a delay between calls or contact us to discuss higher limits. |
-| Decision seems wrong | The AI uses Egyptian market context for pricing and Sharia standards for content. Check `text_reasoning` and `image_reasoning` in the response `details` for the AI's explanation. |
+| Problem                        | What to check                                                                                                                                                                      |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Request hangs or times out     | Set your HTTP client timeout to at least **30 seconds**. AI processing typically takes 5–15 seconds.                                                                               |
+| Getting `401 UNAUTHORIZED`     | Ensure the `X-API-Key` header is present in every request.                                                                                                                         |
+| Getting `403 FORBIDDEN`        | Verify the API key value is correct with no extra whitespace or newlines.                                                                                                          |
+| Getting `400 VALIDATION_ERROR` | Check that `title`, `description`, and `category` are all present and non-empty. `price` is optional but must be a number if provided.                                             |
+| `imageUrl` not analyzed        | The image URL must be publicly accessible (no auth required). The API fetches it server-side.                                                                                      |
+| Getting `429 RATE_LIMITED`     | You have exceeded 30 requests/minute. Add a delay between calls or contact us to discuss higher limits.                                                                            |
+| Decision seems wrong           | The AI uses Egyptian market context for pricing and Sharia standards for content. Check `text_reasoning` and `image_reasoning` in the response `details` for the AI's explanation. |
 
 ---
 

@@ -14,14 +14,9 @@ export function createApp() {
 
   app.use(express.json({ limit: "10mb" }));
 
-  const allowedOrigins =
-    config.corsAllowedOrigins === "*"
-      ? "*"
-      : config.corsAllowedOrigins.split(",").map((o) => o.trim());
-
   app.use(
     cors({
-      origin: allowedOrigins,
+      origin: "*",
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "X-API-Key", "Authorization"],
       exposedHeaders: [

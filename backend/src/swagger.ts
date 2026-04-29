@@ -91,9 +91,9 @@ export const openApiSpec = {
             properties: {
               decision: {
                 type: "string",
-                enum: ["Approve", "Review", "Reject"],
+                enum: ["AUTO_APPROVED", "NEEDS_REVIEW", "AUTO_REJECTED"],
                 description: "The final moderation decision",
-                example: "Approve",
+                example: "AUTO_APPROVED",
               },
               confidence_score: {
                 type: "integer",
@@ -120,7 +120,7 @@ export const openApiSpec = {
                   text_decision: {
                     type: "string",
                     nullable: true,
-                    enum: ["approve", "review", "reject", null],
+                    enum: ["approve", "review", "reject"],
                   },
                   text_confidence: {
                     type: "integer",
@@ -146,7 +146,7 @@ export const openApiSpec = {
                   image_decision: {
                     type: "string",
                     nullable: true,
-                    enum: ["approve", "review", "reject", null],
+                    enum: ["approve", "review", "reject"],
                     description: "null when no imageUrl was provided",
                   },
                   image_confidence: {
@@ -267,7 +267,7 @@ export const openApiSpec = {
                 example: {
                   success: true,
                   data: {
-                    decision: "Approve",
+                    decision: "AUTO_APPROVED",
                     confidence_score: 93,
                     reasoning: "The ad content is appropriate and complies with all marketplace policies.",
                     processed_at: "2024-01-22T10:30:00.000Z",

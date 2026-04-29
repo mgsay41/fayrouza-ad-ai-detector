@@ -22,6 +22,7 @@ export const config = {
   webhookApiKey: required("WEBHOOK_API_KEY"),
   internalApiKey: required("INTERNAL_API_KEY"),
   adminApiKey: required("ADMIN_API_KEY"),
+  publicApiKey: optional("PUBLIC_API_KEY", process.env["WEBHOOK_API_KEY"] ?? ""),
 
   geminiApiKey: required("GEMINI_API_KEY"),
   geminiModel: optional("GEMINI_MODEL", "gemini-2.5-flash"),

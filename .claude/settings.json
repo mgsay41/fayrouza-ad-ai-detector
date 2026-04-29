@@ -12,7 +12,9 @@
       "Bash(docker exec *)",
       "Bash(node -e ' *)",
       "Bash(git rm *)",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "Read(//c/c/Users/mgsay/OneDrive/Desktop/Software development/**)",
+      "Bash(npm install *)"
     ]
   }
 }

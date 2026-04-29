@@ -2,12 +2,13 @@ import crypto from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { config } from "../config";
 
-type ApiKeyScope = "webhook" | "internal" | "admin";
+type ApiKeyScope = "webhook" | "internal" | "admin" | "public";
 
 const keysByScope: Record<ApiKeyScope, string> = {
   webhook: config.webhookApiKey,
   internal: config.internalApiKey,
   admin: config.adminApiKey,
+  public: config.publicApiKey,
 };
 
 function timingSafeCompare(a: string, b: string): boolean {
